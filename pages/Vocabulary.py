@@ -103,5 +103,5 @@ with tab3:
 ######### TAB 4
 
 
-with tab1:
-  st.caption("Feel like procrastinating, might finish later lolz")
+with tab4:
+  st.caption("Feel like procrastinating, might finish later.")
