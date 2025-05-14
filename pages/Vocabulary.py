@@ -54,7 +54,7 @@ with tab3:
     st.caption("Click the button to hear a word. Then type it and press 'Check the answer'.")
 
     # Load CSV
-    url = "https://raw.githubusercontent.com/MK316/Digital-Literacy-Class/refs/heads/main/data/word_frequency.csv"  # Replace this!
+    url = "https://raw.githubusercontent.com/thelighterside/streamlit25/refs/heads/main/data/group3_word_frequency.csv"  # Replace this!
     df = pd.read_csv(url)
     word_list = df["Word"].dropna().tolist()
 
