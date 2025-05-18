@@ -1,3 +1,4 @@
 streamlit
 gtts
 pandas
+language_tool_python
