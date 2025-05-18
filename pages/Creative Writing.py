@@ -33,7 +33,8 @@ if st.button("Check Grammar"):
                 )
     else:
         st.warning("Please enter some text.")
-        
+
+
 for i, match in enumerate(matches, 1):
     context = match.get('context', {})
     offset = context.get('offset', 0)
