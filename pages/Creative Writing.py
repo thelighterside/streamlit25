@@ -3,43 +3,45 @@ import streamlit as st
 import pandas as pd
 import random
 
-st.title("Grammar & Vocabulary Helper")  # Single title at the top
+st.title("Check your grammar!")
 
-tab1, tab2 = st.tabs(["Get a Random Word", "Grammar Check"])
+tab1, tab2 = st.tabs(["Get a random word", "Grammar Check"])
 
-# ===== TAB 1: Random Word =====
-with tab1:
-    CSV_URL = "https://raw.githubusercontent.com/thelighterside/streamlit25/refs/heads/main/data/group3_word_frequency.csv"
-    
-    @st.cache_data
-    def load_words(url):
-        return pd.read_csv(url)
-    
+# Corrected raw CSV URL
+CSV_URL = "https://raw.githubusercontent.com/thelighterside/streamlit25/main/data/group3_word_frequency.csv"
+
+@st.cache_data
+def load_words(url):
     try:
-        df = load_words(CSV_URL)
-        if "word" not in df.columns:
-            st.error("Error: CSV file must contain a 'word' column.")
-        else:
-            if st.button("Suggest a Random Word"):
-                word = random.choice(df["word"].dropna().tolist())
-                st.success(f"Your random word is: **{word}**")
+        df = pd.read_csv(url)
+        return df
     except Exception as e:
-        st.error(f"Failed to load CSV: {str(e)}")
+        return None
 
-# ===== TAB 2: Grammar Check =====
+with tab1:
+    df = load_words(CSV_URL)
+    if df is None:
+        st.error("Failed to load CSV. Please check the file URL and make sure the file is public.")
+    elif "word" not in df.columns:
+        st.error("CSV must have a 'word' column.")
+    else:
+        if st.button("Suggest a Random Word"):
+            word = random.choice(df["word"].dropna().tolist())
+            st.success(f"Your random word is: **{word}**")
+
 with tab2:
-    sentence = st.text_area("Enter your text to check for mistakes:", height=150)
-    
+    sentence = st.text_area("Enter the sentence that you've written to check for any mistakes:", height=150)
     if st.button("Check Grammar"):
         if sentence.strip():
             url = "https://api.languagetool.org/v2/check"
-            data = {'text': sentence, 'language': 'en-US'}
-            
+            data = {
+                'text': sentence,
+                'language': 'en-US'
+            }
             try:
                 response = requests.post(url, data=data)
-                response.raise_for_status()  # Check for HTTP errors
+                response.raise_for_status()
                 result = response.json()
-                
                 matches = result.get('matches', [])
                 if not matches:
                     st.success("✅ No issues found! Your text looks good.")
@@ -51,17 +53,15 @@ with tab2:
                         length = context.get('length', 0)
                         context_text = context.get('text', '')
                         error_part = context_text[offset:offset+length] if context_text else ''
-                        
                         replacements = match.get('replacements', [])
                         suggestion = ', '.join([r['value'] for r in replacements]) if replacements else 'No suggestion'
-                        
                         st.markdown(
                             f"**Issue {i}:** {match.get('message', 'Unknown error')}\n\n"
                             f"- **Error:** `{error_part}`\n"
                             f"- **Suggestion:** `{suggestion}`\n"
                             f"- **Rule:** {match.get('rule', {}).get('description', 'Unknown rule')}\n"
                         )
-            except requests.exceptions.RequestException as e:
-                st.error(f"API request failed: {str(e)}")
+            except Exception as e:
+                st.error(f"Grammar API error: {e}")
         else:
-            st.warning("Please enter some text to check.")
+            st.warning("Please enter some text.")
