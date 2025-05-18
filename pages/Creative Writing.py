@@ -1,5 +1,8 @@
 import requests
 import streamlit as st
+import streamlit as st
+import pandas as pd
+import random
 
 st.title("Check your grammar!")
 
@@ -8,12 +11,8 @@ tab1,tab2, = st.tabs(["Get a random word","Grammar Check"])  # Comma is importan
 with tab1:
     sentence = st.text_area("Enter the sentence that you've written to check for any mistakes:", height=150)
 
-import streamlit as st
-import pandas as pd
-import random
-
 # Replace this with your actual raw CSV URL
-CSV_URL = "https://raw.githubusercontent.com/username/repo/main/words.csv"
+CSV_URL = "https://raw.githubusercontent.com/thelighterside/streamlit25/refs/heads/main/data/group3_word_frequency.csv"
 
 @st.cache_data
 def load_words(url):
