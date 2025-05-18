@@ -1,7 +1,7 @@
 import requests
 import streamlit as st
 
-st.title("Check your grammar")
+st.title("Check your grammar!")
 
 tab1, = st.tabs(["Grammar Check"])  # Comma is important for tuple unpacking
 
