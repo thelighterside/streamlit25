@@ -2,7 +2,9 @@ import requests
 import streamlit as st
 
 st.title("Check your writing for grammatical mistakes!")
+tab1, = st.tabs(["Grammar Check"])  # Comma is important for tuple unpacking
 
+with tab1:
 sentence = st.text_area("Enter your text to check for errors:", height=150)
 
 if st.button("Check Grammar"):
