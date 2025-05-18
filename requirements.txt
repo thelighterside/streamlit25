@@ -1,4 +1,4 @@
 streamlit
 gtts
 pandas
-requests
+language_tool_python
