@@ -1,12 +1,12 @@
 import requests
 import streamlit as st
 
-st.title("Grammar Checker App")
+st.title("Check your grammar")
 
 tab1, = st.tabs(["Grammar Check"])  # Comma is important for tuple unpacking
 
 with tab1:
-    sentence = st.text_area("Enter your text to check:", height=150)
+    sentence = st.text_area("Enter the sentence that you've written to check for any mistakes:", height=150)
 
     if st.button("Check Grammar"):
         if sentence.strip():
