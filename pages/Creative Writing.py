@@ -1,7 +1,7 @@
 import requests
 import streamlit as st
 
-st.title("Enhanced Grammar Checker Using LanguageTool API")
+st.title("Check your writing for gramamtical mistakes!")
 
 sentence = st.text_area("Enter your text to check:", height=150)
 
