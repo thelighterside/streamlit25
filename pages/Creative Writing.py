@@ -1,32 +1,19 @@
 import streamlit as st
 import language_tool_python
 
-def check_grammar(text):
-    tool = language_tool_python.LanguageTool('en-US')
-    matches = tool.check(text)
-    return matches
+st.title("Simple Grammar Checker")
 
-st.title("Check for grammatical errors!")
-st.write("Enter the sentence that you have written to check its grammatical correctness:")
-
-text_input = st.text_area("Input Text", height=150)
+sentence = st.text_area("Enter a sentence to check:", height=100)
 
 if st.button("Check Grammar"):
-    if text_input.strip():
-        with st.spinner("Analyzing..."):
-            matches = check_grammar(text_input)
-            
-        if not matches:
+    if sentence.strip():
+        tool = language_tool_python.LanguageTool('en-US')
+        matches = tool.check(sentence)
+        if len(matches) == 0:
             st.success("✅ The sentence is grammatically correct!")
         else:
-            st.error(f"❌ Found {len(matches)} potential error(s)")
-            
-            for i, match in enumerate(matches, 1):
-                st.markdown(f"""
-                **Error {i}**  
-                - **Message**: {match.message}  
-                - **Suggested Correction**: {', '.join(match.replacements)}  
-                - **Context**: `...{text_input[max(0, match.offset-10):match.offset]}**{text_input[match.offset:match.offset+match.errorLength]}**{text_input[match.offset+match.errorLength:match.offset+match.errorLength+10]}...`
-                """)
+            st.error(f"❌ Found {len(matches)} issue(s):")
+            for match in matches:
+                st.write(f"- {match.message}")
     else:
-        st.warning("Please enter some text to check")
+        st.warning("Please enter a sentence.")
