@@ -6,7 +6,7 @@ def check_grammar(text):
     matches = tool.check(text)
     return matches
 
-st.title("Grammar Checker App")
+st.title("Check for grammatical errors!")
 st.write("Enter the sentence that you have written to check its grammatical correctness:")
 
 text_input = st.text_area("Input Text", height=150)
