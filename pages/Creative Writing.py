@@ -3,7 +3,7 @@ import pandas as pd
 import random
 import requests
 
-st.title("Grammar & Vocabulary Helper")
+st.title("Write your own sentence!")
 
 # Define tabs
 tab1, tab2 = st.tabs(["Get a Random Word", "Grammar Check"])
