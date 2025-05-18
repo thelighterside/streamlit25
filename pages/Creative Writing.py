@@ -1,9 +1,6 @@
 import requests
 import streamlit as st
 
-with tab2:
-  st.markdown("### 📋 Grammar check")
-
 st.title("Check your writing for grammatical mistakes!")
 
 sentence = st.text_area("Enter your text to check for errors:", height=150)
