@@ -3,7 +3,7 @@ import streamlit as st
 
 st.title("Check your writing for grammatical mistakes!")
 
-sentence = st.text_area("Enter your text to check:", height=150)
+sentence = st.text_area("Enter your text to check for errors:", height=150)
 
 if st.button("Check Grammar"):
     if sentence.strip():
