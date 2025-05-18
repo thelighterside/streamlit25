@@ -1,40 +1,21 @@
-import requests
+import openai
 import streamlit as st
 
-st.title("Enhanced Grammar Checker Using LanguageTool API")
+openai.api_key = "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"
 
-sentence = st.text_area("Enter your text to check:", height=150)
+st.title("GPT Grammar Checker")
+
+text = st.text_area("Enter text to check:")
 
 if st.button("Check Grammar"):
-    if sentence.strip():
-        url = "https://api.languagetool.org/v2/check"
-        data = {
-            'text': sentence,
-            'language': 'en-US'
-        }
-        response = requests.post(url, data=data)
-        result = response.json()
-        matches = result.get('matches', [])
-        if not matches:
-            st.success("✅ No issues found! Your text looks good.")
-        else:
-            st.error(f"❌ Found {len(matches)} issue(s):")
-            for i, match in enumerate(matches, 1):
-                context = match.get('context', {})
-                offset = context.get('offset', 0)
-                length = context.get('length', 0)
-                context_text = context.get('text', '')
-                error_part = context_text[offset:offset+length] if context_text else ''
-                
-                # Safely get replacements
-                replacements = match.get('replacements', [])
-                suggestion = ', '.join([r['value'] for r in replacements]) if replacements else 'No suggestion'
-                
-                st.markdown(
-                    f"**Issue {i}:** {match.get('message', 'Unknown error')}\n\n"
-                    f"- **Error:** `{error_part}`\n"
-                    f"- **Suggestion:** `{suggestion}`\n"
-                    f"- **Rule:** {match.get('rule', {}).get('description', 'Unknown rule')}\n"
-                )
+    if text.strip():
+        prompt = f"Correct any grammar, spelling, or style mistakes in the following text and explain your corrections:\n\n{text}"
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=500,
+            temperature=0
+        )
+        st.write(response['choices'][0]['message']['content'])
     else:
         st.warning("Please enter some text.")
