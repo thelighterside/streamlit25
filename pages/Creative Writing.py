@@ -3,9 +3,39 @@ import streamlit as st
 
 st.title("Check your grammar!")
 
-tab1, = st.tabs(["Grammar Check"])  # Comma is important for tuple unpacking
+tab1,tab2, = st.tabs(["Get a random word","Grammar Check"])  # Comma is important for tuple unpacking
 
 with tab1:
+    sentence = st.text_area("Enter the sentence that you've written to check for any mistakes:", height=150)
+
+import streamlit as st
+import pandas as pd
+import random
+
+# Replace this with your actual raw CSV URL
+CSV_URL = "https://raw.githubusercontent.com/username/repo/main/words.csv"
+
+@st.cache_data
+def load_words(url):
+    df = pd.read_csv(url)
+    return df
+
+st.title("Random Word Suggester")
+
+try:
+    df = load_words(CSV_URL)
+    if "word" not in df.columns:
+        st.error("CSV must have a 'word' column.")
+    else:
+        if st.button("Suggest a Random Word"):
+            word = random.choice(df["word"].dropna().tolist())
+            st.success(f"Your random word is: **{word}**")
+except Exception as e:
+    st.error(f"Failed to load CSV: {e}")
+
+
+
+with tab2:
     sentence = st.text_area("Enter the sentence that you've written to check for any mistakes:", height=150)
 
     if st.button("Check Grammar"):
